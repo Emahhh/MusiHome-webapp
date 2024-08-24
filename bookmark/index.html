@@ -81,6 +81,14 @@
             } else {
                 // alert('App is NOT running as a standalone');
             }
+            
+            // register an event to reload the page when the user navigates back
+            // altrimenti il redirect non avviene quando l'utente apre la pagina che è già aperta!
+            window.addEventListener('pageshow', function(event) {
+                if (event.persisted) {
+                    window.location.reload();
+                }
+            });
         };
 
         // Register the Service Worker
