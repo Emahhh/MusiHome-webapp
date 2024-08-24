@@ -4,6 +4,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- iOS Standalone Mode -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+
     <title id="page-title">Music Bookmark</title>
     <style>
         body {
@@ -41,6 +46,8 @@
 
     <script>
         window.onload = function () {
+
+            // URL PARAMETERS
             const params = new URLSearchParams(window.location.search);
             const redirectUrl = params.get('url');
             const name = params.get('name');
