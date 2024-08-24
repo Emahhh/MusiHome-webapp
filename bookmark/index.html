@@ -75,20 +75,20 @@
 
             // Check if the app is running as a standalone
             if (("standalone" in window.navigator) && window.navigator.standalone) {
-                // alert('App is running as a standalone');
-                // Redirect to the music service URL
+                
+                // IF REOPENED, REDIRECT THE BROWSER
+                // register an event to reload the page when the user navigates back
+                // altrimenti il redirect non avviene quando l'utente apre la pagina che è già aperta!
+                document.addEventListener('visibilitychange', function() {
+                    if (document.visibilityState === 'visible') {
+                        window.location.href = redirectUrl;
+                    }
+                });
+
+                // redirect
                 window.location.href = redirectUrl;
             } else {
-                // alert('App is NOT running as a standalone');
             }
-            
-            // register an event to reload the page when the user navigates back
-            // altrimenti il redirect non avviene quando l'utente apre la pagina che è già aperta!
-            window.addEventListener('pageshow', function(event) {
-                if (event.persisted) {
-                    window.location.reload();
-                }
-            });
         };
 
         // Register the Service Worker
