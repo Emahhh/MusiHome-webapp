@@ -1,1 +1,1 @@
-Vai su tipo https://emahhh.github.io/MusiHome-webapp/bookmark/?name=Brat&url=charlixcx.com&color=blue&img=charlixcx.com
+Vai su tipo https://emahhh.github.io/MusiHome-webapp/bookmark/?name=Brat&url=charlixcx.com&color=green&img=https%3A%2F%2Fencrypted%2Dtbn0%2Egstatic%2Ecom%2Fimages%3Fq%3Dtbn%3AANd9GcRFKKsz9ns4XvccPj%2D2mXT%5FUDN1BHeHKkT%5FkPq3v6GTXe71UTkdJszFqM%2DIP518Cl2BUvM%26usqp%3DCAU

@@ -74,7 +74,7 @@
             if (color) document.body.style.backgroundColor = color;
 
             // Check if the app is running as a standalone
-            if (window.matchMedia('(display-mode: standalone)').matches) {
+            if (("standalone" in window.navigator) && window.navigator.standalone) {
                 alert('App is running as a standalone');
                 // Redirect to the music service URL
                 window.location.href = redirectUrl;
