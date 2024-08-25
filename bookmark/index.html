@@ -35,13 +35,17 @@
 <body>
     
     <div class="container" id="instructions">
-        <p>Tap the share button and then 'Add to Home Screen'</p>
+        <h1>Add this page to your home screen</h1>
+        <p>1: Tap the share button on your home screen</p> 
+        <p>2: Tap 'Add to Home Screen'</p>
     </div>
 
     <div id="redirect" class="container">
         <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
         <h1 id="bookmark-name">MusiHome</h1>
         <h2>Powered by MusiHome</h2>
+        <p>Your music app will be opened in some seconds. If nothing happens, click here to open.</p>
+        <!-- TODO: click here and bug report-->
     </div>
 
     <script>
@@ -100,17 +104,17 @@
 
         // Register the Service Worker
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/service-worker.js')
+            navigator.serviceWorker.register('./service-worker.js')
                 .then(function (registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
-                    alert('Service Worker registered with scope:', registration.scope);
+                    // alert('Service Worker registered with scope: '+ registration.scope);
                 }).catch(function (error) {
                     console.log('Service Worker registration failed:', error);
-                    alert('Service Worker registration failed:', error);
+                    // alert('Service Worker registration failed: ' + error.message);
                 });
         } else {
             console.log('Service Worker not supported');
-            alert('Service Worker not supported');
+            // alert('Service Worker not supported');
         }
     </script>
 </body>
