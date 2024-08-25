@@ -2,9 +2,10 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open('music-bookmark').then(function(cache) {
             return cache.addAll([
-                '/',  // Cache the root URL
-                '/index.html',  // Cache the HTML file
-                // Optionally cache other static assets here
+                '/bookmark/',  // Cache the root URL
+                '/bookmark/index.html',  // Cache the HTML file
+                // TODO: cache della foto? è necessario?
+                // TODO: Optionally cache other static assets here
             ]);
         })
     );

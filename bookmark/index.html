@@ -73,8 +73,12 @@
             }
             if (color) document.body.style.backgroundColor = color;
 
-            // Check if the app is running as a standalone
+            // Check if the app is running as a standalone (full screen webapp) or just in safari
             if (("standalone" in window.navigator) && window.navigator.standalone) {
+
+                // hide instructions and show redirect
+                document.getElementById('instructions').style.display = 'none';
+                document.getElementById('redirect').style.display = 'block';
                 
                 // IF REOPENED, REDIRECT THE BROWSER
                 // register an event to reload the page when the user navigates back
@@ -88,6 +92,9 @@
                 // redirect
                 window.location.href = redirectUrl;
             } else {
+                // hide redirect and show instructions
+                document.getElementById('redirect').style.display = 'none';
+                document.getElementById('instructions').style.display = 'block';
             }
         };
 
@@ -96,9 +103,14 @@
             navigator.serviceWorker.register('/service-worker.js')
                 .then(function (registration) {
                     console.log('Service Worker registered with scope:', registration.scope);
+                    alert('Service Worker registered with scope:', registration.scope);
                 }).catch(function (error) {
                     console.log('Service Worker registration failed:', error);
+                    alert('Service Worker registration failed:', error);
                 });
+        } else {
+            console.log('Service Worker not supported');
+            alert('Service Worker not supported');
         }
     </script>
 </body>
