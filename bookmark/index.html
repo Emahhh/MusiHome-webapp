@@ -189,13 +189,17 @@
                 document.title = name;
             }
             if (img) {
-                document.getElementById('bookmark-icon').src = img;
+                const imgUrl = new URL(img, window.location.href).href;
+                document.getElementById('bookmark-icon').src = imgUrl;
 
                 // Dynamically create apple-touch-icon link
                 let link = document.createElement('link');
                 link.rel = 'apple-touch-icon';
-                link.href = img;
+                link.href = imgUrl;
                 document.head.appendChild(link);
+
+                // Preload the image to ensure it's cached
+                fetch(imgUrl);
             }
 
             // Check if the app is running as a standalone (full screen webapp) or just in safari

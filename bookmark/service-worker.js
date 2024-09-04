@@ -2,9 +2,8 @@ self.addEventListener('install', function(event) {
     event.waitUntil(
         caches.open('music-bookmark').then(function(cache) {
             return cache.addAll([
-                '../bookmark/index.html',  // Cache the root URL
-                // TODO: cache della foto? è necessario?
-                // TODO: Optionally cache other static assets here
+                '../bookmark/index.html',
+                // We'll cache the image dynamically in the fetch event
             ]);
         })
     );
@@ -13,12 +12,22 @@ self.addEventListener('install', function(event) {
 self.addEventListener('fetch', function(event) {
     const url = new URL(event.request.url);
     
-    // Check if the request is for the /bookmark/ path, so that it is fetched from the cache for ANY query parameters
     if (url.pathname === '/bookmark/') {
         event.respondWith(
             caches.match('/bookmark/').then(function(response) {
-                // Return the cached page if available, or fetch from the network
                 return response || fetch(event.request);
+            })
+        );
+    } else if (url.searchParams.get('img')) {
+        // Cache the image if it's requested with the 'img' parameter
+        event.respondWith(
+            caches.open('music-bookmark').then(function(cache) {
+                return cache.match(event.request).then(function(response) {
+                    return response || fetch(event.request).then(function(response) {
+                        cache.put(event.request, response.clone());
+                        return response;
+                    });
+                });
             })
         );
     }
