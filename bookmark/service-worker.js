@@ -21,9 +21,8 @@ self.addEventListener('fetch', function(event) {
 
             return fetch(fetchRequest).then(function(response) {
                 // Check if we received a valid response
-                if(!response || response.status === 404 || response.type !== 'basic') {
-                    // For 404 errors, try to return the cached version if available
-                    return caches.match(event.request);
+                if(!response || response.status !== 200 || response.type !== 'basic') {
+                    return response;
                 }
 
                 // Clone the response because it's a stream and can only be consumed once
@@ -34,10 +33,9 @@ self.addEventListener('fetch', function(event) {
                 });
 
                 return response;
-            }).catch(function() {
-                // Network error, try to return the cached version
-                return caches.match(event.request);
             });
         })
     );
 });
+
+
