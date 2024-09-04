@@ -115,6 +115,14 @@
 </head>
 
 <body>
+
+    <div id="redirect" class="container">
+        <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
+        <h1 id="bookmark-name">MusiHome</h1>
+        <h2>Powered by MusiHome</h2>
+        <p>Your music app will be opened in some seconds. If nothing happens, click here to open.</p>
+        <!-- TODO: click here and bug report-->
+    </div>
     
     <div class="container" id="instructions-container">
         <div class="container">
@@ -171,7 +179,6 @@
             const redirectUrl = params.get('url');
             const name = params.get('name');
             const img = params.get('img');
-            const color = params.get('color');
 
             // Apply parameters to page
             if (name) {
@@ -190,7 +197,6 @@
                 link.href = img;
                 document.head.appendChild(link);
             }
-            if (color) document.body.style.backgroundColor = color;
 
             // Check if the app is running as a standalone (full screen webapp) or just in safari
             if (("standalone" in window.navigator) && window.navigator.standalone) {
