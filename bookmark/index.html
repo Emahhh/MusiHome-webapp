@@ -9,35 +9,149 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
 
-    <title id="page-title">Music Bookmark</title>
+    <title id="page-title">MusiHome Bookmark</title>
     <style>
+
+        .instructions-container {
+        }
+
         body {
-            text-align: center;
-            font-family: Arial, sans-serif;
-            background-color: #f2f2f2;
-            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f2f2f7;
+            margin: 0;
+            padding: 0;
+            color: #1c1c1e;
+            line-height: 1.5;
         }
+
         .container {
-            margin-top: 20%;
+            padding: 5vh 5vw;
+            box-sizing: border-box;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 800px;
+            margin: 0 auto;
         }
-        .img-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 20%;
-            background-color: #ddd;
+
+        #adhs-title {
+            font-size: clamp(24px, 8vw, 48px);
+            font-weight: 700;
+            margin-bottom: 5vh;
+            text-align: center;
+            color: #007aff;
         }
-        .instructions {
-            margin-top: 20px;
+
+        .instruction {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 5vh;
+        }
+
+        .step {
+            background-color: #007aff;
+            color: #fff;
+            font-size: clamp(18px, 5vw, 24px);
+            font-weight: 600;
+            width: clamp(40px, 10vw, 60px);
+            height: clamp(40px, 10vw, 60px);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 4vw;
+            flex-shrink: 0;
+        }
+
+        .text {
+            flex: 1;
+            font-size: clamp(16px, 4vw, 20px);
+        }
+
+        .text-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1vh;
+        }
+
+        .text span {
+            font-weight: 600;
+            color: #007aff;
+        }
+
+        .image-share,
+        .image-home {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+            padding: 6px;
+        }
+
+        .image-share {
+            height: clamp(24px, 6vw, 36px);
+            margin-left: 2vw;
+        }
+
+        .image-home {
+            height: clamp(32px, 8vw, 48px);
+            margin-left: 2vw;
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 5vh 10vw;
+            }
+
+            .instruction {
+                margin-bottom: 6vh;
+            }
+
+            .step {
+                margin-right: 3vw;
+            }
         }
     </style>
 </head>
 
 <body>
     
-    <div class="container" id="instructions">
-        <h1>Add this page to your home screen</h1>
-        <p>1: Tap the share button on your home screen</p> 
-        <p>2: Tap 'Add to Home Screen'</p>
+    <div class="container" id="instructions-container">
+        <div class="container">
+            <div id="adhs-title"></div>
+    
+            <div class="instruction">
+                <div class="step">1</div>
+                <div class="text">
+                    <div class="text-header">
+                        <span id="title-1"></span>
+                        <img id="image-share" class="image-share"
+                            src="/assets/share.svg"
+                            alt="Share Button">
+                    </div>
+                    <div id="detail-1"></div>
+                </div>
+            </div>
+    
+            <div class="instruction">
+                <div class="step">2</div>
+                <div class="text">
+                    <span id="title-2"></span>
+                    <img id="image-home" class="image-home"
+                    src="/assets/add-home.svg"
+                        alt="Add to Home Screen Button">
+                    <div id="detail-2"></div>
+                </div>
+            </div>
+    
+            <div class="instruction">
+                <div class="step">3</div>
+                <div class="text">
+                    <span id="title-3"></span>
+                    <div id="detail-3"></div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <div id="redirect" class="container">
@@ -49,6 +163,7 @@
     </div>
 
     <script>
+
         window.onload = function () {
 
             // URL PARAMETERS
@@ -81,7 +196,7 @@
             if (("standalone" in window.navigator) && window.navigator.standalone) {
 
                 // hide instructions and show redirect
-                document.getElementById('instructions').style.display = 'none';
+                document.getElementById('instructions-container').style.display = 'none';
                 document.getElementById('redirect').style.display = 'block';
                 
                 // IF REOPENED, REDIRECT THE BROWSER
@@ -98,10 +213,11 @@
             } else {
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';
-                document.getElementById('instructions').style.display = 'block';
+                document.getElementById('instructions-container').style.display = 'block';
             }
         };
 
+        // SERVICE WORKER
         // Register the Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./service-worker.js')
@@ -115,6 +231,44 @@
         } else {
             console.log('Service Worker not supported');
             // alert('Service Worker not supported');
+        }
+
+        // INSTRUCTIONS CODE: codice necessario per mostrare le istruzioni per aggiungere la pagina alla home screen
+        {
+
+            const translations = {
+                en: {
+                    title: "Add this page to your home screen to continue",
+                    title1: "Tap the share button ",
+                    detail1: 'It should be located at the bottom of your screen.',
+                    title2: 'Select "Add to home screen" ',
+                    detail2: 'You may need to scroll down to find this menu item.',
+                    title3: "Done!",
+                    detail3: ""
+                },
+            };
+
+            function updateContent(language) {
+                document.getElementById("adhs-title").textContent = translations[language].title;
+                document.getElementById("title-1").textContent = translations[language].title1;
+                document.getElementById("detail-1").textContent = translations[language].detail1;
+                document.getElementById("title-2").textContent = translations[language].title2;
+                document.getElementById("detail-2").textContent = translations[language].detail2;
+                document.getElementById("title-3").textContent = translations[language].title3;
+                document.getElementById("detail-3").textContent = translations[language].detail3;
+            }
+
+            document.addEventListener("DOMContentLoaded", function () {
+                // Detect the browser's default language
+                const userLang = navigator.language || navigator.userLanguage;
+                const langCode = userLang.split('-')[0]; // Extract the language code, e.g., 'en' from 'en-US'
+
+                // Check if the detected language is available in the translations
+                const languageToUse = translations[langCode] ? langCode : 'en'; // Default to English if the language is not available
+
+                // Update the content with the selected language
+                updateContent(languageToUse);
+            });
         }
     </script>
 </body>
