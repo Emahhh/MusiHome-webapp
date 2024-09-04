@@ -111,6 +111,60 @@
                 margin-right: 3vw;
             }
         }
+
+        #redirect {
+            text-align: center;
+            background-color: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 32px;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        #bookmark-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #bookmark-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin: 0 0 8px;
+            color: #007aff;
+        }
+
+        #redirect h2 {
+            font-size: 16px;
+            font-weight: 500;
+            margin: 0 0 16px;
+            color: #8e8e93;
+        }
+
+        #redirect p {
+            font-size: 14px;
+            margin: 0;
+            color: #3a3a3c;
+        }
+
+        #open-link {
+            display: inline-block;
+            margin-top: 16px;
+            padding: 8px 16px;
+            background-color: #007aff;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background-color 0.2s ease;
+        }
+
+        #open-link:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 
@@ -120,8 +174,8 @@
         <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
         <h1 id="bookmark-name">MusiHome</h1>
         <h2>Powered by MusiHome</h2>
-        <p>Your music app will be opened in some seconds. If nothing happens, click here to open.</p>
-        <!-- TODO: click here and bug report-->
+        <p>Your music app will be opened in a few seconds.</p>
+        <a href="#" id="open-link">Open Now</a>
     </div>
     
     <div class="container" id="instructions-container">
@@ -206,8 +260,8 @@
             if (("standalone" in window.navigator) && window.navigator.standalone) {
 
                 // hide instructions and show redirect
-                document.getElementById('instructions-container').style.display = 'none';
                 document.getElementById('redirect').style.display = 'block';
+                document.getElementById('instructions-container').style.display = 'none';
                 
                 // IF REOPENED, REDIRECT THE BROWSER
                 // register an event to reload the page when the user navigates back
