@@ -251,6 +251,12 @@
                 fetch(imgUrl);
             }
 
+            if (!redirectUrl) {
+                console.error('No redirect URL provided');
+            }
+
+            document.getElementById('open-link').href = redirectUrl;
+
             // Check if the app is running as a standalone (full screen webapp) or just in safari
             if (("standalone" in window.navigator) && window.navigator.standalone) {
 
@@ -278,6 +284,7 @@
 
         function redirect(destUrl) {
             window.open(destUrl, '_blank');
+            window.location.href = destUrl;
         }
 
         // SERVICE WORKER
