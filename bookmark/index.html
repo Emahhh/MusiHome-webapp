@@ -263,18 +263,22 @@
                 // altrimenti il redirect non avviene quando l'utente apre la pagina che è già aperta!
                 document.addEventListener('visibilitychange', function() {
                     if (document.visibilityState === 'visible') {
-                        window.location.href = redirectUrl;
+                        redirect(redirectUrl);
                     }
                 });
 
                 // redirect
-                window.location.href = redirectUrl;
+                redirect(redirectUrl);
             } else {
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';
                 document.getElementById('instructions-container').style.display = 'block';
             }
         };
+
+        function redirect(destUrl) {
+            window.open(destUrl, '_blank');
+        }
 
         // SERVICE WORKER
         // Register the Service Worker
