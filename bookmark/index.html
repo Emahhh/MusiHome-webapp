@@ -238,17 +238,13 @@
                 document.title = name;
             }
             if (img) {
-                const imgUrl = new URL(img, window.location.href).href;
-                document.getElementById('bookmark-icon').src = imgUrl;
+                document.getElementById('bookmark-icon').src = img;
 
                 // Dynamically create apple-touch-icon link
                 let link = document.createElement('link');
                 link.rel = 'apple-touch-icon';
-                link.href = imgUrl;
+                link.href = img;
                 document.head.appendChild(link);
-
-                // Preload the image to ensure it's cached
-                fetch(imgUrl);
             }
 
             if (!redirectUrl) {
