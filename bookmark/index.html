@@ -299,6 +299,18 @@
             // alert('Service Worker not supported');
         }
 
+        // dici al service worker di pre-cacheare l'immagine, usando un evento
+        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+            const urlParams = new URLSearchParams(window.location.search);
+            const imageUrl = urlParams.get('img');
+            if (imageUrl) {
+                navigator.serviceWorker.controller.postMessage({
+                    type: 'CACHE_IMAGE',
+                    url: imageUrl
+                });
+            }
+        }
+
         // INSTRUCTIONS CODE: codice necessario per mostrare le istruzioni per aggiungere la pagina alla home screen
         {
 
