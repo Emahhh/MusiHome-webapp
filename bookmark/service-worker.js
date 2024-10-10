@@ -16,20 +16,7 @@ self.addEventListener('fetch', function(event) {
                 return response;
             }
 
-            // Clone the request because it's a stream and can only be consumed once
-            var fetchRequest = event.request.clone();
-
-            return fetch(fetchRequest).then(function(response) {
-                // Check if we received a valid response
-                if(!response || response.status !== 200) {
-                    return response;
-                }
-
-                return response;
-            }).catch(function() {
-                // Network error, try to return the cached version
-                return caches.match(event.request);
-            });
+            return fetch(event.request);
         })
     );
 });
