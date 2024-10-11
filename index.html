@@ -9,41 +9,24 @@
     <link rel="shortcut icon" href="/assets/favicon.ico" />
     <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png" />
 
+    <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.purple.min.css"
+    >
+
     <title>MusiHome - Homepage</title>
-    <style>
-        body {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            text-align: center;
-            padding: 2em;
-            background-color: #f9f9f9;
-        }
-        h1 {
-            font-size: 2.5em;
-            margin-bottom: 0.5em;
-        }
-        p {
-            font-size: 1.2em;
-            margin-bottom: 1.5em;
-        }
-        a {
-            display: inline-block;
-            padding: 1em 2em;
-            font-size: 1.5em;
-            background-color: #007bff;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        a:hover {
-            background-color: #0056b3;
-        }
-    </style>
 </head>
 <body>
-    <h1>Welcome to MusiHome</h1>
-    <p>Your music app, available for free on the App Store!</p>
-    <a href="https://apps.apple.com/app/idYOUR_APP_ID">Download Now</a>
-    <!-- TODO: insert link; finish homepage -->
+    <header class="container">
+        <h1>MusiHome App</h1>
+    </header>
+    <main class="container">
+        <p>Your favourite music on your home-screen.</p>
+        <p>Available for free on the App Store.</p>
+        <a href="https://apps.apple.com/app/idYOUR_APP_ID" role="button" class="primary">Download Now</a>
+        <!-- TODO: insert link; finish homepage -->
+        <p><a href="/support" role="button" class="secondary">Support</a></p>
+    </main>
 </body>
 </html>
 
