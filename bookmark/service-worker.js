@@ -8,7 +8,16 @@ self.addEventListener('install', function(event) {
     );
 });
 
+
+self.addEventListener('activate', function(event) {
+    console.log('Service Worker activating.');
+});
+
+
 self.addEventListener('fetch', function(event) {
+
+    console.log('Fetching:', event.request.url);
+
     event.respondWith(
         caches.match(event.request).then(function(response) {
             // Cache hit - return response
@@ -16,7 +25,9 @@ self.addEventListener('fetch', function(event) {
                 return response;
             }
 
-            return fetch(event.request);
+            return fetch(event.request).catch(function() {
+                return new Response('No internet connection');
+            }
         })
     );
 });
