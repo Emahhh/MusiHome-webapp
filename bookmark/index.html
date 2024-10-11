@@ -244,6 +244,36 @@
             const name = params.get('name');
             const img = params.get('img');
 
+            // SERVICE WORKER
+            {
+                // Register the Service Worker
+                if ('serviceWorker' in navigator) {
+                    navigator.serviceWorker.register('./service-worker.js')
+                        .then(function (registration) {
+                            console.log('Service Worker registered with scope:', registration.scope);
+                            // alert('Service Worker registered with scope: '+ registration.scope);
+                        }).catch(function (error) {
+                            console.log('Service Worker registration failed:', error);
+                            // alert('Service Worker registration failed: ' + error.message);
+                        });
+                } else {
+                    console.log('Service Worker not supported');
+                    // alert('Service Worker not supported');
+                }
+
+                // dici al service worker di pre-cacheare l'immagine, usando un evento
+                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
+                    if (img) {
+                        navigator.serviceWorker.controller.postMessage({
+                            type: 'CACHE_IMAGE',
+                            url: img
+                        });
+                    }
+                }
+            }
+
+
+
             // Apply parameters to page
             if (name) {
                 document.getElementById('bookmark-name').innerText = name;
@@ -296,34 +326,6 @@
         function redirect(destUrl) {
             window.open(destUrl, '_blank');
             window.location.href = destUrl;
-        }
-
-        // SERVICE WORKER
-        // Register the Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./service-worker.js')
-                .then(function (registration) {
-                    console.log('Service Worker registered with scope:', registration.scope);
-                    // alert('Service Worker registered with scope: '+ registration.scope);
-                }).catch(function (error) {
-                    console.log('Service Worker registration failed:', error);
-                    // alert('Service Worker registration failed: ' + error.message);
-                });
-        } else {
-            console.log('Service Worker not supported');
-            // alert('Service Worker not supported');
-        }
-
-        // dici al service worker di pre-cacheare l'immagine, usando un evento
-        if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            const urlParams = new URLSearchParams(window.location.search);
-            const imageUrl = urlParams.get('img');
-            if (imageUrl) {
-                navigator.serviceWorker.controller.postMessage({
-                    type: 'CACHE_IMAGE',
-                    url: imageUrl
-                });
-            }
         }
 
         // INSTRUCTIONS CODE: codice necessario per mostrare le istruzioni per aggiungere la pagina alla home screen
