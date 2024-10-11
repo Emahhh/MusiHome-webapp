@@ -27,7 +27,8 @@ self.addEventListener('fetch', function(event) {
 
             return fetch(event.request).catch(function() {
                 return new Response('No internet connection');
-            }
+            });
+            
         })
     );
 });
