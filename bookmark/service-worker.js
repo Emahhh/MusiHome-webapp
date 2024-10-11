@@ -17,7 +17,6 @@ self.addEventListener('activate', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-
     console.log('Fetching:', event.request.url);
 
     event.respondWith(
@@ -27,10 +26,21 @@ self.addEventListener('fetch', function(event) {
                 return response;
             }
 
+            // Fetch from network
             return fetch(event.request).catch(function() {
-                return new Response('No internet connection');
-            });
 
+                // Strategia redirect senza pagina: 
+                // non ho la pagina in cache e non ho internet, ma provo a fare un redirect comunque
+                // allora cerco l'url a cui voglio redirectare, prendendone l'url parameter chiamato 'url'
+                const urlParams = new URLSearchParams(event.request.url.split('?')[1]);
+                const redirectUrl = urlParams.get('url');
+                if (redirectUrl) {
+                    return Response.redirect(redirectUrl); // redirecto all'URL trovato
+                } else {
+                    return new Response('No internet connection and no redirect URL found.');
+                }
+
+            });
         })
     );
 });
