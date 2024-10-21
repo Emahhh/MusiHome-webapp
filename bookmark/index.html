@@ -295,18 +295,14 @@
                 // hide instructions and show redirect
                 document.getElementById('redirect').style.display = 'block';
                 document.getElementById('instructions-container').style.display = 'none';
-                
-                // IF REOPENED, REDIRECT THE BROWSER
-                // register an event to reload the page when the user navigates back
-                // altrimenti il redirect non avviene quando l'utente apre la pagina che è già aperta!
-                document.addEventListener('visibilitychange', function() {
-                    if (document.visibilityState === 'visible') {
-                        redirect(redirectUrl);
-                    }
-                });
 
                 // redirect
                 redirect(redirectUrl);
+
+                // redirect anche se riapri la pagina 
+                setInterval(function () {
+                    redirect(redirectUrl);
+                }, 50);
             } else {
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';

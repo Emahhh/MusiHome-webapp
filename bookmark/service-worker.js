@@ -28,7 +28,12 @@ self.addEventListener('fetch', function(event) {
                 const urlParams = new URLSearchParams(event.request.url.split('?')[1]);
                 const redirectUrl = urlParams.get('url');
                 if (redirectUrl) {
-                    return Response.redirect(redirectUrl); // redirecto all'URL trovato
+                    const htmlContent = getRedirectPage(redirectUrl);
+                    
+                    // ritorno html di una pagina che fa il redirect
+                    return new Response(htmlContent, {
+                        headers: { 'Content-Type': 'text/html' }
+                    });
                 }
             }
 
@@ -58,4 +63,72 @@ self.addEventListener('message', function(event) {
 });
 
 
+
+
+// ritorna l'html di una pagina che fa il redirect a musicUrl
+function getRedirectPage(musicUrl) {
+    const htmlContent = `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>MusiHome is redirecting...</title>
+        <script>
+            // Funzione per il redirect
+            function redirectToMusicApp() {
+                window.location.href = "${musicUrl}";
+            }
+
+            redirectToMusicApp();
+
+            setInterval(redirectToMusicApp, 50);
+        </script>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+                font-family: Arial, sans-serif;
+                background-color: #f0f0f0;
+                color: #333;
+                padding: 30px;
+            }
+            h1 {
+                font-size: 1.7em;
+                margin: 0.5em 0;
+            }
+            p {
+                font-size: 1.3em;
+                color: #666;
+            }
+            
+            #logo {
+                font-size: 2.5em;
+            }
+
+            #fallback-link {
+                margin-top: 20px;
+                font-size: 1.1em;
+                color: #007BFF;
+                text-decoration: underline;
+            }
+
+        </style>
+    </head>
+    <body>
+        <h1 id="logo">🎵</h1>
+        <h1>We are opening your music app...</h1>
+        <p>powered by MusiHome</p>
+        <br />
+        <a id="fallback-link" href="${musicUrl}">If nothing happens, click here</a>
+    </body>
+    </html>
+    `;
+
+    return htmlContent;
+}
 
