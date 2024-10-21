@@ -300,9 +300,12 @@
                 redirect(redirectUrl);
 
                 // redirect anche se riapri la pagina 
-                setInterval(function () {
-                    redirect(redirectUrl);
-                }, 50);
+                document.addEventListener('visibilitychange', function() {
+                    if (document.visibilityState === 'visible') {
+                        redirect(redirectUrl);
+                    }
+                });
+                
             } else {
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';

@@ -82,7 +82,13 @@ function getRedirectPage(musicUrl) {
 
             redirectToMusicApp();
 
-            setInterval(redirectToMusicApp, 50);
+            // redirect anche se riapri la pagina 
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    redirectToMusicApp();
+                }
+            });
+
         </script>
         <style>
             body {
