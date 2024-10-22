@@ -34,7 +34,15 @@ self.addEventListener('fetch', function(event) {
         }
 
         // altrimenti, ritorno la risposta normale presa da internet
-        return fetch(event.request);
+        try {
+            return await fetch(event.request);
+        } catch (error) {
+            console.error('Fetch failed:', error);
+            return new Response('An error occurred while fetching the resource.', {
+            status: 500,
+            statusText: 'Internal Server Error'
+            });
+        }
     })());
 });
 
