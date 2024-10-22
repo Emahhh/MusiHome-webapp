@@ -21,7 +21,7 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, Helvetica, Arial, sans-serif;
             background-color: #f2f2f7;
             margin: 0;
             padding: 0;
@@ -235,6 +235,8 @@
             const name = params.get('name');
             const img = params.get('img');
 
+
+
             // SERVICE WORKER
             {
                 // Register the Service Worker
@@ -265,7 +267,7 @@
 
 
 
-            // Apply parameters to page
+            // PRENDI I PARAMETRI DALL'URL, E USALI
             if (name) {
                 document.getElementById('bookmark-name').innerText = name;
                 document.getElementById('page-title').innerText = name;
@@ -291,6 +293,7 @@
 
             // Check if the app is running as a standalone (full screen webapp) or just in safari
             if (("standalone" in window.navigator) && window.navigator.standalone) {
+                // FAI AVVENIRE IL REDIRECT
 
                 // hide instructions and show redirect
                 document.getElementById('redirect').style.display = 'block';
@@ -307,6 +310,7 @@
                 });
                 
             } else {
+                // MOSTRA ISTRUZIONI
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';
                 document.getElementById('instructions-container').style.display = 'block';

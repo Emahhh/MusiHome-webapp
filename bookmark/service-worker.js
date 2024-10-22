@@ -22,35 +22,23 @@ self.addEventListener('fetch', function(event) {
     event.respondWith(
         caches.match(event.request).then(function(response) {
 
-            // prendo l'url a cui voglio redirectare, prendendone l'url parameter chiamato 'url'
-            // questa risposta non ha bisogno di connessione internet
+            // RISPOSTA CON HTML PRESO DA FUNZIONE
+            // questa risposta non ha bisogno di connessione internet, e nemmeno di cache
+            // perché prendo html dalla funzione e non dalla cache? perché Safari è infame e ti cancella subito la cache
             {
-                const urlParams = new URLSearchParams(event.request.url.split('?')[1]);
-                const redirectUrl = urlParams.get('url');
-                if (redirectUrl) {
-                    const htmlContent = getInstallAndRedirectPage();
-                    
-                    // ritorno html di una pagina che fa il redirect
-                    return new Response(htmlContent, {
-                        headers: { 'Content-Type': 'text/html' }
-                    });
-                }
+                const htmlContent = getInstallAndRedirectPage();
+                
+                // ritorno html di una pagina che fa il redirect
+                return new Response(htmlContent, {
+                    headers: { 'Content-Type': 'text/html' }
+                });
             }
-
-            // se non riesco con la prima strategia, rispondo con la pagina cachata
-            if (response) {
-                return response;
-            } 
-
-            // altrimenti, rispondo con la pagina vera, presa dal network
-            return fetch(event.request).catch(function() {
-                return new Response('No internet connection and no redirect URL found.');
-            });
 
         })
     );
 });
 
+// CACHE THE IMAGE
 // Add this new event listener to cache the image from the URL parameter
 self.addEventListener('message', function(event) {
     if (event.data && event.data.type === 'CACHE_IMAGE') {
@@ -65,9 +53,11 @@ self.addEventListener('message', function(event) {
 
 
 
-// ritorna l'html di una pagina che fa il redirect a musicUrl
+// ritorna una stringa contenente l'html di una pagina
+// REMEMBER: mettere qua dentro l'HTML di index.html, ma togliendo il js che installa il service worker (perché già installato!)
 function getInstallAndRedirectPage() {
-    const htmlContent = `
+
+const htmlContent = `
 <!DOCTYPE html>
 <html lang="en">
 
@@ -91,7 +81,7 @@ function getInstallAndRedirectPage() {
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: -apple-system, Helvetica, Arial, sans-serif;
             background-color: #f2f2f7;
             margin: 0;
             padding: 0;
@@ -249,9 +239,11 @@ function getInstallAndRedirectPage() {
 
     <div id="redirect" class="container">
         <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
-        <h1 id="bookmark-name">MusiHome - versione dal servicer worker</h1>
+        <h1 id="bookmark-name">MusiHome</h1>
         <h2>Powered by MusiHome</h2>
         <p>Your music app will be opened in a few seconds.</p>
+        <p>VERSIONE DAL SERVICE WORKER.</p>
+
         <a href="#" id="open-link">Open Now</a>
     </div>
     
@@ -305,7 +297,8 @@ function getInstallAndRedirectPage() {
             const name = params.get('name');
             const img = params.get('img');
 
-            // Apply parameters to page
+
+            // PRENDI I PARAMETRI DALL'URL, E USALI
             if (name) {
                 document.getElementById('bookmark-name').innerText = name;
                 document.getElementById('page-title').innerText = name;
@@ -331,6 +324,7 @@ function getInstallAndRedirectPage() {
 
             // Check if the app is running as a standalone (full screen webapp) or just in safari
             if (("standalone" in window.navigator) && window.navigator.standalone) {
+                // FAI AVVENIRE IL REDIRECT
 
                 // hide instructions and show redirect
                 document.getElementById('redirect').style.display = 'block';
@@ -347,6 +341,7 @@ function getInstallAndRedirectPage() {
                 });
                 
             } else {
+                // MOSTRA ISTRUZIONI
                 // hide redirect and show instructions
                 document.getElementById('redirect').style.display = 'none';
                 document.getElementById('instructions-container').style.display = 'block';
@@ -398,7 +393,7 @@ function getInstallAndRedirectPage() {
     </script>
 </body>
 </html>
-    `;
+`;
 
     return htmlContent;
 }
