@@ -38,19 +38,6 @@ self.addEventListener('fetch', function(event) {
     );
 });
 
-// CACHE THE IMAGE
-// Add this new event listener to cache the image from the URL parameter
-self.addEventListener('message', function(event) {
-    if (event.data && event.data.type === 'CACHE_IMAGE') {
-        event.waitUntil(
-            caches.open('music-bookmark').then(function(cache) {
-                return cache.add(event.data.url);
-            })
-        );
-    }
-});
-
-
 
 
 // ritorna una stringa contenente l'html di una pagina
@@ -189,14 +176,6 @@ const htmlContent = `
             margin: 0 auto;
         }
 
-        #bookmark-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
         #bookmark-name {
             font-size: 24px;
             font-weight: 700;
@@ -218,19 +197,8 @@ const htmlContent = `
         }
 
         #open-link {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 8px 16px;
-            background-color: #007aff;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-
-        #open-link:hover {
-            background-color: #0056b3;
+            font-size: 14px;
+            color: #8e8e93;
         }
     </style>
 </head>
@@ -238,13 +206,10 @@ const htmlContent = `
 <body>
 
     <div id="redirect" class="container">
-        <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
         <h1 id="bookmark-name">MusiHome</h1>
         <h2>Powered by MusiHome</h2>
-        <p>Your music app will be opened in a few seconds.</p>
-        <p>VERSIONE DAL SERVICE WORKER.</p>
-
-        <a href="#" id="open-link">Open Now</a>
+        <p>We are opening your music app...</p>
+        <a href="#" id="open-link">If nothing happens, click here</a>
     </div>
     
     <div class="container" id="instructions-container">
@@ -297,7 +262,6 @@ const htmlContent = `
             const name = params.get('name');
             const img = params.get('img');
 
-
             // PRENDI I PARAMETRI DALL'URL, E USALI
             if (name) {
                 document.getElementById('bookmark-name').innerText = name;
@@ -307,7 +271,6 @@ const htmlContent = `
                 document.title = name;
             }
             if (img) {
-                document.getElementById('bookmark-icon').src = img;
 
                 // Dynamically create apple-touch-icon link
                 let link = document.createElement('link');

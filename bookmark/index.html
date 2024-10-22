@@ -129,14 +129,6 @@
             margin: 0 auto;
         }
 
-        #bookmark-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-        }
-
         #bookmark-name {
             font-size: 24px;
             font-weight: 700;
@@ -158,19 +150,8 @@
         }
 
         #open-link {
-            display: inline-block;
-            margin-top: 16px;
-            padding: 8px 16px;
-            background-color: #007aff;
-            color: #ffffff;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background-color 0.2s ease;
-        }
-
-        #open-link:hover {
-            background-color: #0056b3;
+            font-size: 14px;
+            color: #8e8e93;
         }
     </style>
 </head>
@@ -178,11 +159,10 @@
 <body>
 
     <div id="redirect" class="container">
-        <img id="bookmark-icon" class="img-icon" src="" alt="Album/Artist">
         <h1 id="bookmark-name">MusiHome</h1>
         <h2>Powered by MusiHome</h2>
-        <p>Your music app will be opened in a few seconds.</p>
-        <a href="#" id="open-link">Open Now</a>
+        <p>We are opening your music app...</p>
+        <a href="#" id="open-link">If nothing happens, click here</a>
     </div>
     
     <div class="container" id="instructions-container">
@@ -253,16 +233,6 @@
                     console.log('Service Worker not supported');
                     // alert('Service Worker not supported');
                 }
-
-                // dici al service worker di pre-cacheare l'immagine, usando un evento
-                if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-                    if (img) {
-                        navigator.serviceWorker.controller.postMessage({
-                            type: 'CACHE_IMAGE',
-                            url: img
-                        });
-                    }
-                }
             }
 
 
@@ -276,7 +246,6 @@
                 document.title = name;
             }
             if (img) {
-                document.getElementById('bookmark-icon').src = img;
 
                 // Dynamically create apple-touch-icon link
                 let link = document.createElement('link');
