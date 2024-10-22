@@ -33,9 +33,11 @@ self.addEventListener('fetch', function(event) {
                 headers: { 'Content-Type': 'text/html' }
             });
         }
-        
+
         // altrimenti, ritorno la risposta normale presa da internet
-        return fetch(event.request);
+        return fetch(event.request).catch(function() {
+            console.log('Error fetching:', requestURL);
+        });
     });
 
 });
