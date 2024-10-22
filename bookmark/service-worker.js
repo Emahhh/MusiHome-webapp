@@ -1,11 +1,11 @@
 self.addEventListener('install', function(event) {
-    event.waitUntil(
-        caches.open('music-bookmark').then(function(cache) {
-            return cache.addAll([
-                './index.html', 
-            ]);
-        })
-    );
+    // event.waitUntil(
+    //     caches.open('music-bookmark').then(function(cache) {
+    //         return cache.addAll([
+    //             './index.html', 
+    //         ]);
+    //     })
+    // );
 
     console.log('Service Worker installed.');
 });
@@ -19,23 +19,24 @@ self.addEventListener('activate', function(event) {
 self.addEventListener('fetch', function(event) {
     console.log('Fetching:', event.request.url);
 
-    event.respondWith(
-        caches.match(event.request).then(function(response) {
+    event.respondWith(function() {
 
-            // RISPOSTA CON HTML PRESO DA FUNZIONE
-            // questa risposta non ha bisogno di connessione internet, e nemmeno di cache
-            // perché prendo html dalla funzione e non dalla cache? perché Safari è infame e ti cancella subito la cache
-            {
-                const htmlContent = getInstallAndRedirectPage();
-                
-                // ritorno html di una pagina che fa il redirect
-                return new Response(htmlContent, {
-                    headers: { 'Content-Type': 'text/html' }
-                });
-            }
+        // SE LA RICHIESTA È PER BOOKMARK, RISPONDO CON HTML PRESO DA FUNZIONE
+        // questa risposta non ha bisogno di connessione internet, e nemmeno di cache
+        // perché prendo html dalla funzione e non dalla cache? perché Safari è infame e ti cancella subito la cache
+        if ( requestURL.pathname.startsWith('/bookmark/') ) {
+            const htmlContent = getInstallAndRedirectPage();
+            
+            // ritorno html di una pagina che fa il redirect
+            return new Response(htmlContent, {
+                headers: { 'Content-Type': 'text/html' }
+            });
+        } else {
+            // altrimenti, ritorno la risposta normale presa da internet
+            return fetch(event.request);
+        }
+    });
 
-        })
-    );
 });
 
 
