@@ -17,7 +17,8 @@ self.addEventListener('activate', function(event) {
 
 
 self.addEventListener('fetch', function(event) {
-    console.log('Fetching:', event.request.url);
+    const requestURL = new URL(event.request.url);
+    console.log('Fetching:', requestURL);
 
     event.respondWith(function() {
 
@@ -31,10 +32,10 @@ self.addEventListener('fetch', function(event) {
             return new Response(htmlContent, {
                 headers: { 'Content-Type': 'text/html' }
             });
-        } else {
-            // altrimenti, ritorno la risposta normale presa da internet
-            return fetch(event.request);
         }
+        
+        // altrimenti, ritorno la risposta normale presa da internet
+        return fetch(event.request);
     });
 
 });
