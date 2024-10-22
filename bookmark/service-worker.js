@@ -20,12 +20,11 @@ self.addEventListener('fetch', function(event) {
     const requestURL = new URL(event.request.url);
     console.log('Fetching:', requestURL);
 
-    event.respondWith(function() {
-
+    event.respondWith((async function() {
         // SE LA RICHIESTA È PER BOOKMARK, RISPONDO CON HTML PRESO DA FUNZIONE
         // questa risposta non ha bisogno di connessione internet, e nemmeno di cache
         // perché prendo html dalla funzione e non dalla cache? perché Safari è infame e ti cancella subito la cache
-        if ( requestURL.pathname.startsWith('/bookmark/') ) {
+        if (requestURL.pathname.startsWith('/bookmark/')) {
             const htmlContent = getInstallAndRedirectPage();
             
             // ritorno html di una pagina che fa il redirect
@@ -35,11 +34,8 @@ self.addEventListener('fetch', function(event) {
         }
 
         // altrimenti, ritorno la risposta normale presa da internet
-        return fetch(event.request).catch(function() {
-            console.log('Error fetching:', requestURL);
-        });
-    });
-
+        return fetch(event.request);
+    })());
 });
 
 
