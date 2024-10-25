@@ -25,6 +25,7 @@ self.addEventListener('fetch', function(event) {
         // questa risposta non ha bisogno di connessione internet, e nemmeno di cache
         // perché prendo html dalla funzione e non dalla cache? perché Safari è infame e ti cancella subito la cache
         if (requestURL.pathname.startsWith('/bookmark/')) {
+            console.log('Request for bookmark page. Trying to respond with getInstallAndRedirectPage()');
             const htmlContent = getInstallAndRedirectPage();
             
             // ritorno html di una pagina che fa il redirect
@@ -35,6 +36,7 @@ self.addEventListener('fetch', function(event) {
 
         // altrimenti, ritorno la risposta normale presa da internet
         try {
+            console.log('Request for other page. Fetching from internet.');
             return await fetch(event.request);
         } catch (error) {
             console.error('Fetch failed:', error);
