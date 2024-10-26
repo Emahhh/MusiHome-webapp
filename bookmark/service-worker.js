@@ -16,6 +16,7 @@ self.addEventListener('activate', function(event) {
 });
 
 
+// TODO: etstare con slow connection
 self.addEventListener('fetch', function(event) {
     const requestURL = new URL(event.request.url);
     console.log('Fetching:', requestURL);
@@ -220,6 +221,7 @@ const htmlContent = `
         <h2>Powered by MusiHome</h2>
         <p>We are opening your music app...</p>
         <a href="#" id="open-link">If nothing happens, click here</a>
+        <p style="color: grey; opacity: 0.7;">offline mode</p>
     </div>
     
     <div class="container" id="instructions-container">
