@@ -63,9 +63,9 @@ const htmlContent = `
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <!-- Favicon. Non specificare Apple Touch Icon, percé lo fa il js dopo. -->
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
-    <link rel="shortcut icon" href="/assets/favicon.ico" />
+    <!-- Favicon. Non specificare Apple Touch Icon, percé lo fa il js dopo. TODO: i 2 sotto magari caricarli con js dopo -->
+    <!-- <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+    <link rel="shortcut icon" href="/assets/favicon.ico" /> -->
 
     <!-- iOS Standalone Mode -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -221,7 +221,6 @@ const htmlContent = `
         <h2>Powered by MusiHome</h2>
         <p>We are opening your music app...</p>
         <a href="#" id="open-link">If nothing happens, click here</a>
-        <p style="color: grey; opacity: 0.7;">offline mode</p>
     </div>
     
     <div class="container" id="instructions-container">
@@ -266,62 +265,64 @@ const htmlContent = `
 
     <script>
 
-        window.onload = function () {
+        // URL PARAMETERS
+        const params = new URLSearchParams(window.location.search);
+        const redirectUrl = params.get('url');
+        const name = params.get('name');
+        const img = params.get('img');
 
-            // URL PARAMETERS
-            const params = new URLSearchParams(window.location.search);
-            const redirectUrl = params.get('url');
-            const name = params.get('name');
-            const img = params.get('img');
 
-            // PRENDI I PARAMETRI DALL'URL, E USALI
-            if (name) {
-                document.getElementById('bookmark-name').innerText = name;
-                document.getElementById('page-title').innerText = name;
 
-                // Set the iOS bookmark name
-                document.title = name;
-            }
-            if (img) {
 
-                // Dynamically create apple-touch-icon link
-                let link = document.createElement('link');
-                link.rel = 'apple-touch-icon';
-                link.href = img;
-                document.head.appendChild(link);
-            }
 
-            if (!redirectUrl) {
-                console.error('No redirect URL provided');
-            }
+        // PRENDI I PARAMETRI DALL'URL, E USALI
+        if (name) {
+            document.getElementById('bookmark-name').innerText = name;
+            document.getElementById('page-title').innerText = name;
 
-            document.getElementById('open-link').href = redirectUrl;
+            // Set the iOS bookmark name
+            document.title = name;
+        }
+        if (img) {
 
-            // Check if the app is running as a standalone (full screen webapp) or just in safari
-            if (("standalone" in window.navigator) && window.navigator.standalone) {
-                // FAI AVVENIRE IL REDIRECT
+            // Dynamically create apple-touch-icon link
+            let link = document.createElement('link');
+            link.rel = 'apple-touch-icon';
+            link.href = img;
+            document.head.appendChild(link);
+        }
 
-                // hide instructions and show redirect
-                document.getElementById('redirect').style.display = 'block';
-                document.getElementById('instructions-container').style.display = 'none';
+        if (!redirectUrl) {
+            console.error('No redirect URL provided');
+        }
 
-                // redirect
-                redirect(redirectUrl);
+        document.getElementById('open-link').href = redirectUrl;
 
-                // redirect anche se riapri la pagina 
-                document.addEventListener('visibilitychange', function() {
-                    if (document.visibilityState === 'visible') {
-                        redirect(redirectUrl);
-                    }
-                });
-                
-            } else {
-                // MOSTRA ISTRUZIONI
-                // hide redirect and show instructions
-                document.getElementById('redirect').style.display = 'none';
-                document.getElementById('instructions-container').style.display = 'block';
-            }
-        };
+        // Check if the app is running as a standalone (full screen webapp) or just in safari
+        if (("standalone" in window.navigator) && window.navigator.standalone) {
+            // FAI AVVENIRE IL REDIRECT
+
+            // hide instructions and show redirect
+            document.getElementById('redirect').style.display = 'block';
+            document.getElementById('instructions-container').style.display = 'none';
+
+            // redirect
+            redirect(redirectUrl);
+
+            // redirect anche se riapri la pagina 
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    redirect(redirectUrl);
+                }
+            });
+            
+        } else {
+            // MOSTRA ISTRUZIONI
+            // hide redirect and show instructions
+            document.getElementById('redirect').style.display = 'none';
+            document.getElementById('instructions-container').style.display = 'block';
+        }
+
 
         function redirect(destUrl) {
             window.open(destUrl, '_blank');
