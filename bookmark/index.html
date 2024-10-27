@@ -207,84 +207,82 @@
 
     <script>
 
-        window.onload = function () {
-
-            // URL PARAMETERS
-            const params = new URLSearchParams(window.location.search);
-            const redirectUrl = params.get('url');
-            const name = params.get('name');
-            const img = params.get('img');
+        // URL PARAMETERS
+        const params = new URLSearchParams(window.location.search);
+        const redirectUrl = params.get('url');
+        const name = params.get('name');
+        const img = params.get('img');
 
 
 
-            // SERVICE WORKER
-            {
-                // Register the Service Worker
-                if ('serviceWorker' in navigator) {
-                    navigator.serviceWorker.register('./service-worker.js')
-                        .then(function (registration) {
-                            console.log('Service Worker registered with scope:', registration.scope);
-                            // alert('Service Worker registered with scope: '+ registration.scope);
-                        }).catch(function (error) {
-                            console.log('Service Worker registration failed:', error);
-                            // alert('Service Worker registration failed: ' + error.message);
-                        });
-                } else {
-                    console.log('Service Worker not supported');
-                    // alert('Service Worker not supported');
-                }
-            }
-
-
-
-            // PRENDI I PARAMETRI DALL'URL, E USALI
-            if (name) {
-                document.getElementById('bookmark-name').innerText = name;
-                document.getElementById('page-title').innerText = name;
-
-                // Set the iOS bookmark name
-                document.title = name;
-            }
-            if (img) {
-
-                // Dynamically create apple-touch-icon link
-                let link = document.createElement('link');
-                link.rel = 'apple-touch-icon';
-                link.href = img;
-                document.head.appendChild(link);
-            }
-
-            if (!redirectUrl) {
-                console.error('No redirect URL provided');
-            }
-
-            document.getElementById('open-link').href = redirectUrl;
-
-            // Check if the app is running as a standalone (full screen webapp) or just in safari
-            if (("standalone" in window.navigator) && window.navigator.standalone) {
-                // FAI AVVENIRE IL REDIRECT
-
-                // hide instructions and show redirect
-                document.getElementById('redirect').style.display = 'block';
-                document.getElementById('instructions-container').style.display = 'none';
-
-                // redirect
-                redirect(redirectUrl);
-
-                // redirect anche se riapri la pagina 
-                document.addEventListener('visibilitychange', function() {
-                    if (document.visibilityState === 'visible') {
-                        redirect(redirectUrl);
-                    }
-                });
-                
+        // SERVICE WORKER
+        {
+            // Register the Service Worker
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('./service-worker.js')
+                    .then(function (registration) {
+                        console.log('Service Worker registered with scope:', registration.scope);
+                        // alert('Service Worker registered with scope: '+ registration.scope);
+                    }).catch(function (error) {
+                        console.log('Service Worker registration failed:', error);
+                        // alert('Service Worker registration failed: ' + error.message);
+                    });
             } else {
-                // MOSTRA ISTRUZIONI
-                // hide redirect and show instructions
-                document.getElementById('redirect').style.display = 'none';
-                document.getElementById('instructions-container').style.display = 'block';
+                console.log('Service Worker not supported');
+                // alert('Service Worker not supported');
             }
-        };
+        }
+
+
+
+        // PRENDI I PARAMETRI DALL'URL, E USALI
+        if (name) {
+            document.getElementById('bookmark-name').innerText = name;
+            document.getElementById('page-title').innerText = name;
+
+            // Set the iOS bookmark name
+            document.title = name;
+        }
+        if (img) {
+
+            // Dynamically create apple-touch-icon link
+            let link = document.createElement('link');
+            link.rel = 'apple-touch-icon';
+            link.href = img;
+            document.head.appendChild(link);
+        }
+
+        if (!redirectUrl) {
+            console.error('No redirect URL provided');
+        }
+
+        document.getElementById('open-link').href = redirectUrl;
+
+        // Check if the app is running as a standalone (full screen webapp) or just in safari
+        if (("standalone" in window.navigator) && window.navigator.standalone) {
+            // FAI AVVENIRE IL REDIRECT
+
+            // hide instructions and show redirect
+            document.getElementById('redirect').style.display = 'block';
+            document.getElementById('instructions-container').style.display = 'none';
+
+            // redirect
+            redirect(redirectUrl);
+
+            // redirect anche se riapri la pagina 
+            document.addEventListener('visibilitychange', function() {
+                if (document.visibilityState === 'visible') {
+                    redirect(redirectUrl);
+                }
+            });
+            
+        } else {
+            // MOSTRA ISTRUZIONI
+            // hide redirect and show instructions
+            document.getElementById('redirect').style.display = 'none';
+            document.getElementById('instructions-container').style.display = 'block';
+        }
+
 
         function redirect(destUrl) {
             window.open(destUrl, '_blank');
